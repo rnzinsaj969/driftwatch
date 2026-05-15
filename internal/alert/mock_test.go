@@ -38,3 +38,12 @@ func (m *MockSender) LastPayload() (alert.Payload, error) {
 	}
 	return m.Payloads[len(m.Payloads)-1], nil
 }
+
+// Reset clears all recorded payloads and resets the configured error.
+// This is useful when reusing a MockSender across multiple sub-tests.
+func (m *MockSender) Reset() {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.Payloads = nil
+	m.Err = nil
+}
