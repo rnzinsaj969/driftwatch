@@ -61,6 +61,11 @@ func (c *Config) validate() error {
 	if len(c.WatchPaths) == 0 {
 		return fmt.Errorf("watch_paths must contain at least one path")
 	}
+	for _, p := range c.WatchPaths {
+		if _, err := os.Stat(p); err != nil {
+			return fmt.Errorf("watch_paths entry %q is not accessible: %w", p, err)
+		}
+	}
 	if c.Webhook.URL == "" {
 		return fmt.Errorf("webhook.url is required")
 	}
