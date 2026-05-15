@@ -1,0 +1,24 @@
+# driftwatch example configuration
+# Copy this file to driftwatch.yaml and adjust to your environment.
+
+# Paths to monitor for configuration drift.
+watch_paths:
+  - /etc/nginx
+  - /etc/app/config
+  - /etc/systemd/system
+
+# How often to check for drift.
+interval: 30s
+
+# Logging verbosity: debug | info | warn | error
+log_level: info
+
+# Webhook alert destination.
+webhook:
+  url: https://hooks.example.com/driftwatch/alert
+  # Optional HTTP timeout for webhook delivery.
+  timeout: 10s
+  # Optional extra headers (e.g. for authentication).
+  headers:
+    Authorization: Bearer YOUR_TOKEN_HERE
+    Content-Type: application/json
