@@ -7,7 +7,7 @@ watch_paths:
   - /etc/app/config
   - /etc/systemd/system
 
-# How often to check for drift.
+# How often to check for drift (e.g. 30s, 5m, 1h).
 interval: 30s
 
 # Logging verbosity: debug | info | warn | error
@@ -18,7 +18,14 @@ webhook:
   url: https://hooks.example.com/driftwatch/alert
   # Optional HTTP timeout for webhook delivery.
   timeout: 10s
+  # Optional number of times to retry a failed webhook delivery before giving up.
+  retries: 3
   # Optional extra headers (e.g. for authentication).
   headers:
     Authorization: Bearer YOUR_TOKEN_HERE
     Content-Type: application/json
+
+# Baseline snapshot storage.
+# driftwatch compares the current state of watch_paths against a stored
+# baseline. Set this to a writable path where the baseline file will be kept.
+baseline_path: /var/lib/driftwatch/baseline.json
