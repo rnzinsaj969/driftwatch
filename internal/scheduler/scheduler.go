@@ -52,10 +52,17 @@ func (s *Scheduler) Start(ctx context.Context) {
 }
 
 // runChecks iterates over all watched paths and invokes the check function.
+// Errors are logged but do not halt checks for remaining paths.
 func (s *Scheduler) runChecks() {
+	var errCount int
 	for _, path := range s.cfg.WatchPaths {
 		if err := s.checkFn(path); err != nil {
 			log.Printf("scheduler: check error for %q: %v", path, err)
+			errCount++
 		}
+	}
+	if errCount > 0 {
+		log.Printf("scheduler: %d/%d check(s) failed in this cycle",
+			errCount, len(s.cfg.WatchPaths))
 	}
 }
